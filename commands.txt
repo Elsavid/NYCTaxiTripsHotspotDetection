@@ -1,0 +1,22 @@
+# Kafka
+$KAFKA_BIN/zookeeper-server-start.sh $KAFKA_CONFIG/zookeeper.properties
+$KAFKA_BIN/kafka-server-start.sh $KAFKA_CONFIG/server.properties
+
+$KAFKA_BIN/kafka-topics.sh --create --topic quickstart-events --bootstrap-server localhost:9092
+$KAFKA_BIN/kafka-topics.sh --describe --topic quickstart-events --bootstrap-server localhost:9092
+
+$KAFKA_BIN/kafka-console-producer.sh --topic quickstart-events --bootstrap-server localhost:9092
+$KAFKA_BIN/kafka-console-consumer.sh --topic quickstart-events --from-beginning --bootstrap-server localhost:9092
+
+# Flink
+$FLINK_BIN/start-cluster.sh
+ps aux | grep flink
+$FLINK_BIN/stop-cluster.sh
+$FLINK_BIN/flink run examples/streaming/WordCount.jar
+tail log/flink-*-taskexecutor-*.out
+http://localhost:8081/
+
+$FLINK_BIN/flink run --python main.py
+
+# FLINK JOB COMMAND
+flink run -c nyc_taxi_trips_analysis.NYCTaxiTripsAnalysisHotSpotDetectionJob nyc_taxi_trips_analysis_java-0.1.jar
